@@ -108,7 +108,6 @@ export const ReproForm = () => {
 	return (
 		<>
 			<h1>Form</h1>
-			{/* ⚠️ TypeScript complains about the type of `form`, but the code works */}
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
@@ -116,6 +115,7 @@ export const ReproForm = () => {
 					form.handleSubmit();
 				}}
 			>
+				{/* ⚠️ TypeScript complains about the type of the `form` prop, but the code works */}
 				<ChildForm form={form} title={"Testing"} />
 				<form.Subscribe selector={(state) => state.errors}>
 					{(errors) =>
