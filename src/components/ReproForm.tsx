@@ -83,6 +83,7 @@ export const ReproForm = () => {
 		validators: {
 			onSubmit: (p) => {
 				const name = "Joe";
+				console.log("Validating form on submit", p.value.firstName);
 				console.log("Parent form submitted");
 				if (p.value.firstName.toLowerCase().trim() === name.toLowerCase()) {
 					return `${name} is not allowed to log in`;
@@ -95,34 +96,42 @@ export const ReproForm = () => {
 				}
 			},
 		},
-		onSubmit: async (p) => {
-			const { firstName, lastName } = p.value;
-			console.info("form submitted with the following values: ", {
-				firstName,
-				lastName,
-			});
-		},
+		// onSubmit: async (p) => {
+		// 	const { firstName, lastName } = p.value;
+		// 	console.info("form submitted with the following values: ", {
+		// 		firstName,
+		// 		lastName,
+		// 	});
+		// },
 	});
 
 	return (
 		<>
 			<h1>Form</h1>
 			{/* ⚠️ TypeScript complains about the type of `form`, but the code works */}
-			<ChildForm form={form} title={"Testing"} />
-			<form.Subscribe selector={(state) => state.errors}>
-				{(errors) =>
-					errors.map((e) => (
-						<p
-							style={{
-								color: "red",
-							}}
-							key={e}
-						>
-							{e}
-						</p>
-					))
-				}
-			</form.Subscribe>
+			<form
+				onSubmit={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					form.handleSubmit();
+				}}
+			>
+				<ChildForm form={form} title={"Testing"} />
+				<form.Subscribe selector={(state) => state.errors}>
+					{(errors) =>
+						errors.map((e) => (
+							<p
+								style={{
+									color: "red",
+								}}
+								key={e}
+							>
+								{e}
+							</p>
+						))
+					}
+				</form.Subscribe>
+			</form>
 		</>
 	);
 };
